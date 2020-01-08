@@ -69,7 +69,7 @@ if(APPLE)
         LINK_FLAGS ${AER_LINKER_FLAGS})
 endif()
 
-add_library(applib SHARED /home/brandhsn/hocmis/research/quant/devitt/qiskit/qiskit-aer/src/simulators/statevector/devittsim/Simulator/sim.c /home/brandhsn/hocmis/research/quant/devitt/qiskit/qiskit-aer/src/simulators/statevector/devittsim/Simulator/norm.c )
+add_library(applib SHARED ./../../../../../src/simulators/statevector/devittsim/Simulator/sim.c ./../../../../../src/simulators/statevector/devittsim/Simulator/norm.c )
 #/home/brandhsn/hocmis/research/quant/devitt/qiskit/qiskit-aer/src/simulators/statevector/double-conversion/fast-dtoa.cc
 #)
 # /home/brandhsn/hocmis/research/quant/devitt/qiskit/qiskit-aer/src/simulators/statevector/Simulator/frozen.c)
