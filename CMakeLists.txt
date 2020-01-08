@@ -15,6 +15,10 @@ project(qasm_simulator VERSION ${VERSION_NUM} LANGUAGES CXX C)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
+#SET(OpenBLAS_VERSION "0.3.7")
+#SET(OpenBLAS_INCLUDE_DIRS "/home/brandhsn/anaconda3/envs/QiskitContribWithAer/include")
+#SET(OpenBLAS_LIBRARIES "/home/brandhsn/anaconda3/envs/QiskitContribWithAer/lib/libopenblas.so")
+
 # Warning: Because of a bug on CMake's FindBLAS or (it's not clear whoes fault is)
 # libopenblas.a for Ubuntu (maybe others) we need to copy the file:
 # cmake/FindBLAS.cmake.fix-static-linking, to the directory were CMake Modules are
@@ -55,7 +59,7 @@ endif(CCACHE_FOUND)
 
 # Set default build type to Release with Debug Symbols
 IF(NOT CMAKE_BUILD_TYPE)
-	SET(CMAKE_BUILD_TYPE Release CACHE STRING
+	SET(CMAKE_BUILD_TYPE Debug CACHE STRING
 		"Choose the type of build, options are: Debug Release"
 		FORCE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
@@ -185,6 +189,16 @@ set(AER_LIBRARIES
 	    nlohmann_json
 		Threads::Threads
 		${CMAKE_DL_LIBS})
+
+#target_sources(myLib
+#    PRIVATE
+#	"${PROJECT_SOURCE_DIR}/src/simulators/statevector/Simulator/sim.c"
+#    PUBLIC
+#	"${PROJECT_SOURCE_DIR}/src/simulators/statevector/Simulator/sim.h"
+#
+#)
+
+#add_subdirectory("${PROJECT_SOURCE_DIR}/src/simulators/statevector/Simulator")
 
 # Cython build is only enabled if building through scikit-build.
 if(SKBUILD) # Terra Addon build

@@ -38,6 +38,15 @@ logger = logging.getLogger(__name__)
 # by the simulator extension
 LIBRARY_DIR = os.path.dirname(__file__)
 
+def parseComplexList(dct):
+  if 'statevector' in dct.keys():
+    sv=dct['statevector']
+    res = [0j]*len(sv)
+    for idx, val in enumerate(sv):
+      if val != "0+0j":
+        res[idx]=complex(val)
+        return {'statevector':res}
+  return dct
 
 class AerJSONEncoder(json.JSONEncoder):
     """
@@ -110,6 +119,7 @@ class AerBackend(BaseBackend):
         aer_job = AerJob(self, job_id, self._run_job, qobj,
                          backend_options, noise_model, validate)
         aer_job.submit()
+
         return aer_job
 
     def status(self):
@@ -124,17 +134,30 @@ class AerBackend(BaseBackend):
                              pending_jobs=0,
                              status_msg='')
 
+
     def _run_job(self, job_id, qobj, backend_options, noise_model, validate):
         """Run a qobj job"""
+        import numpy as np
         start = time.time()
         if validate:
             validate_qobj_against_schema(qobj)
             self._validate(qobj, backend_options, noise_model)
         qobj_str = self._format_qobj_str(qobj, backend_options, noise_model)
-        output = json.loads(self._controller(qobj_str).decode('UTF-8'))
+        reslist = self._controller(qobj_str)      
+        sv_list = reslist[1]
+        result_str = reslist[0]
+        #.decode('UTF-8')
+        
+        output = json.loads(result_str)
+        #sv_parsed_and_checked=output['results'][0]['data'].pop('statevector')      
         self._validate_controller_output(output)
+
+
         end = time.time()
-        return self._format_results(job_id, output, end - start)
+        result_formatted = self._format_results(job_id, output, end - start)
+        result_formatted.results[0].data.statevector=np.array(sv_list)
+        #print("result arrived in python {}".format(datetime.datetime.now()))
+        return result_formatted
 
     def _format_qobj_str(self, qobj, backend_options, noise_model):
         """Format qobj string for qiskit aer controller"""

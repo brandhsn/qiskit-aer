@@ -21,7 +21,7 @@ cdef extern from "simulators/unitary/unitary_controller.hpp" namespace "AER::Sim
         UnitaryController() except +
 
 cdef extern from "simulators/controller_execute.hpp" namespace "AER":
-    cdef string controller_execute[UnitaryController](string &qobj) except +
+    cdef list controller_execute[UnitaryController](string &qobj) except +
 
 
 def unitary_controller_execute(qobj):

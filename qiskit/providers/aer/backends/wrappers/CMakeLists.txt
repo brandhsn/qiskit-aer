@@ -68,13 +68,22 @@ if(APPLE)
     set_target_properties(statevector_controller_wrapper PROPERTIES
         LINK_FLAGS ${AER_LINKER_FLAGS})
 endif()
+
+add_library(applib SHARED /home/brandhsn/hocmis/research/quant/devitt/qiskit/qiskit-aer/src/simulators/statevector/Simulator/sim.c /home/brandhsn/hocmis/research/quant/devitt/qiskit/qiskit-aer/src/simulators/statevector/Simulator/norm.c )
+#/home/brandhsn/hocmis/research/quant/devitt/qiskit/qiskit-aer/src/simulators/statevector/double-conversion/fast-dtoa.cc
+#)
+# /home/brandhsn/hocmis/research/quant/devitt/qiskit/qiskit-aer/src/simulators/statevector/Simulator/frozen.c)
+
 target_include_directories(statevector_controller_wrapper
     PRIVATE ${AER_SIMULATOR_CPP_SRC_DIR}
     PRIVATE ${AER_SIMULATOR_CPP_EXTERNAL_LIBS}
     PRIVATE ${PYTHON_INCLUDE_DIRS})
+
 target_link_libraries(statevector_controller_wrapper
     ${AER_LIBRARIES}
-    ${PYTHON_LIBRARIES})
+    ${PYTHON_LIBRARIES}
+    applib
+)
 
 python_extension_module(statevector_controller_wrapper
     FORWARD_DECL_MODULES_VAR fdecl_module_list)
@@ -83,6 +92,7 @@ python_modules_header(modules
     FORWARD_DECL_MODULES_LIST ${fdecl_module_list})
 include_directories(${modules_INCLUDE_DIRS})
 install(TARGETS statevector_controller_wrapper LIBRARY DESTINATION qiskit/providers/aer/backends)
+install(TARGETS applib LIBRARY DESTINATION qiskit/providers/aer/backends)
 
 # Unitary Controller
 

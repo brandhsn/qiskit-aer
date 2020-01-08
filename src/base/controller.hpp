@@ -46,6 +46,7 @@
 #include "transpile/circuitopt.hpp"
 #include "transpile/truncate_qubits.hpp"
 
+#include <ctime>    
 
 namespace AER {
 namespace Base {
@@ -601,6 +602,8 @@ Result Controller::execute(std::vector<Circuit> &circuits,
     result.status = Result::Status::error;
     result.message = e.what();
   }
+    std::time_t end_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    //std::cout << "execute at: "<<std::ctime(&end_time) <<std::endl;
   return result;
 }
 
@@ -689,6 +692,10 @@ ExperimentResult Controller::execute_circuit(Circuit &circ,
     auto timer_stop = myclock_t::now(); // stop timer
     double time_taken = std::chrono::duration<double>(timer_stop - timer_start).count();
     exp_result.time_taken = time_taken;
+
+    std::time_t end_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    //std::cout << "execute circuit at: "<<std::ctime(&end_time) <<std::endl;
+
   }
   // If an exception occurs during execution, catch it and pass it to the output
   catch (std::exception &e) {

@@ -13,7 +13,7 @@
 """
 Cython wrapper for Aer StatevectorController.
 """
-
+import traceback
 from libcpp.string cimport string
 
 cdef extern from "simulators/statevector/statevector_controller.hpp" namespace "AER::Simulator":
@@ -21,9 +21,11 @@ cdef extern from "simulators/statevector/statevector_controller.hpp" namespace "
         StatevectorController() except +
 
 cdef extern from "simulators/controller_execute.hpp" namespace "AER":
-    cdef string controller_execute[StatevectorController](string &qobj) except +
+    #cdef string controller_execute[StatevectorController](string &qobj) except +
+    cdef list controller_execute[StatevectorController](string &qobj) except +
 
 
 def statevector_controller_execute(qobj):
     """Execute qobj on Aer C++ QasmController"""
     return controller_execute[StatevectorController](qobj)
+

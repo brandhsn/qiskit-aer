@@ -19,6 +19,11 @@
 #include "framework/results/data/average_snapshot.hpp"
 #include "framework/results/data/pershot_snapshot.hpp"
 #include "framework/utils.hpp"
+#include <Python.h>
+
+extern "C" {
+  #include "/home/brandhsn/hocmis/research/quant/devitt/qiskit/qiskit-aer/src/simulators/statevector/Simulator/sim.h"
+}
 
 namespace AER {
 
@@ -37,6 +42,10 @@ namespace AER {
 
 class ExperimentData {
  public:
+
+  //std::vector<complex_t> sv_vec;
+  PyObject* sv_list;
+  //ds_Register sim_reg;
   //----------------------------------------------------------------
   // Measurement
   //----------------------------------------------------------------
@@ -923,6 +932,9 @@ ExperimentData &ExperimentData::combine(const ExperimentData &other) {
     additional_cmatrix_data_[key] = pair.second;
   }
 
+  //sv_vec=other.sv_vec;
+  //sim_reg=other.sim_reg;
+  sv_list=other.sv_list;
   return *this;
 }
 
@@ -999,7 +1011,9 @@ ExperimentData &ExperimentData::combine(ExperimentData &&other) {
     erase_additional_data(key);
     additional_cmatrix_data_[key] = std::move(pair.second);
   }
-
+  //sv_vec=std::move(other.sv_vec);
+  //sim_reg=std::move(other.sim_reg);
+  sv_list=std::move(other.sv_list);
   // Clear any remaining data from other container
   other.clear();
 

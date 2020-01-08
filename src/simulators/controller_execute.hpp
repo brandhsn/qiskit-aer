@@ -18,8 +18,9 @@
 #include <string>
 #include "framework/json.hpp"
 #include "misc/hacks.hpp"
-
-
+#include <Python.h>
+#include "framework/results/result.hpp"
+#include "framework/results/experiment_data.hpp"
 //=========================================================================
 // Controller Execute interface
 //=========================================================================
@@ -29,7 +30,7 @@
 // by handling the parsing of std::string input into JSON objects.
 namespace AER { 
 template <class controller_t>
-std::string controller_execute(const std::string &qobj_str) {
+PyObject* controller_execute(const std::string &qobj_str) {
   controller_t controller;
   auto qobj_js = json_t::parse(qobj_str);
 
@@ -41,7 +42,11 @@ std::string controller_execute(const std::string &qobj_str) {
     Hacks::maybe_load_openmp(path);
   }
 
-  return controller.execute(qobj_js).json().dump(-1);
+  Result sim_result = controller.execute(qobj_js);
+  PyObject* return_variables = PyList_New(2);
+  PyList_SetItem(return_variables, 0, PyUnicode_FromString(sim_result.json().dump(-1).c_str()));
+  PyList_SetItem(return_variables, 1, sim_result.results[0].data.sv_list);
+  return return_variables;
 }
 } // end namespace AER
 #endif

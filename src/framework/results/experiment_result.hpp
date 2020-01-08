@@ -16,6 +16,7 @@
 #define _aer_framework_results_experiment_result_hpp_
 
 #include "framework/results/experiment_data.hpp"
+#include <Python.h>
 
 namespace AER {
 
