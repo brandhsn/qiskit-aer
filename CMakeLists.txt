@@ -190,16 +190,6 @@ set(AER_LIBRARIES
 		Threads::Threads
 		${CMAKE_DL_LIBS})
 
-#target_sources(myLib
-#    PRIVATE
-#	"${PROJECT_SOURCE_DIR}/src/simulators/statevector/Simulator/sim.c"
-#    PUBLIC
-#	"${PROJECT_SOURCE_DIR}/src/simulators/statevector/Simulator/sim.h"
-#
-#)
-
-#add_subdirectory("${PROJECT_SOURCE_DIR}/src/simulators/statevector/Simulator")
-
 # Cython build is only enabled if building through scikit-build.
 if(SKBUILD) # Terra Addon build
 	add_subdirectory(qiskit/providers/aer/backends/wrappers)

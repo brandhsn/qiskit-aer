@@ -21,10 +21,6 @@
 #include "framework/utils.hpp"
 #include <Python.h>
 
-extern "C" {
-  #include "/home/brandhsn/hocmis/research/quant/devitt/qiskit/qiskit-aer/src/simulators/statevector/Simulator/sim.h"
-}
-
 namespace AER {
 
 //============================================================================
